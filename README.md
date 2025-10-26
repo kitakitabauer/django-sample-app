@@ -112,6 +112,14 @@ uv run pre-commit run --all-files
 - テンプレート共通パーツ（`templates/partials/`）にナビゲーションとメッセージ表示を切り出し、レイアウトを統一しています。
 - 本番環境では `python manage.py collectstatic` を実行して静的ファイルを配備してください。
 
+## 🚀 デプロイと運用のポイント
+
+- `.env.example` をベースに環境変数を設定します。`DJANGO_SECRET_KEY` や `DJANGO_ALLOWED_HOSTS` を本番向けに必ず調整してください。
+- データベースを PostgreSQL に切り替える場合は `DATABASE_URL` を設定し、必要に応じて `psycopg[binary]` を追加します。
+- 静的ファイルは `uv run manage.py collectstatic` で `staticfiles/` に出力し、Nginx などから配信します。
+- WSGI なら `uv run gunicorn django_sample_app.wsgi:application`、ASGI なら `uv run uvicorn django_sample_app.asgi:application` のように起動できます。
+- 詳細な手順は `docs/deployment.md` にまとめています。
+
 ## ✅ チーム向け環境再現
 
 ```bash
