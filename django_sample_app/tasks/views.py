@@ -13,6 +13,7 @@ class TaskListView(ListView):
     model = Task
     template_name = "tasks/task_list.html"
     context_object_name = "tasks"
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -34,11 +35,14 @@ class TaskListView(ListView):
         context = super().get_context_data(**kwargs)
         current_status = self.request.GET.get("status", "all")
         query = (self.request.GET.get("q") or "").strip()
+        params = self.request.GET.copy()
+        params.pop("page", None)
         context.update(
             {
                 "current_status": current_status,
                 "query": query,
                 "active_filters": {"status": current_status, "query": query},
+                "query_urlencode": params.urlencode(),
             }
         )
         return context

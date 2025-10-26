@@ -69,6 +69,34 @@ class TaskTests(TestCase):
         self.assertContains(res, "Plan sprint")
         self.assertNotContains(res, "Random task")
 
+    def test_list_paginates_results(self):
+        for idx in range(12):
+            Task.objects.create(title=f"Task {idx}")
+
+        res = self.client.get(reverse("tasks:list"))
+        html = res.content.decode()
+
+        self.assertIn("Task 11</strong>", html)
+        self.assertIn("Task 2</strong>", html)
+        self.assertNotIn("Task 1</strong>", html)
+        self.assertNotIn("Task 0</strong>", html)
+
+        res_page2 = self.client.get(reverse("tasks:list"), {"page": 2})
+        html_page2 = res_page2.content.decode()
+        self.assertIn("Task 1</strong>", html_page2)
+        self.assertIn("Task 0</strong>", html_page2)
+
+    def test_pagination_links_preserve_filters(self):
+        for idx in range(12):
+            Task.objects.create(title=f"Task {idx}")
+
+        res = self.client.get(reverse("tasks:list"), {"status": "open", "q": "Task"})
+        html = res.content.decode()
+        self.assertTrue(
+            'href="?q=Task&amp;status=open&page=2"' in html
+            or 'href="?status=open&amp;q=Task&page=2"' in html
+        )
+
     def test_create_view_valid_submission(self):
         res = self.client.post(
             reverse("tasks:create"),
