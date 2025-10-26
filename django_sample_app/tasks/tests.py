@@ -5,6 +5,17 @@ from .models import Task
 
 
 class TaskTests(TestCase):
+    def test_task_str_returns_title(self):
+        task = Task.objects.create(title="Sample title")
+        self.assertEqual(str(task), "Sample title")
+
+    def test_task_ordering_latest_first(self):
+        older = Task.objects.create(title="Old task")
+        newer = Task.objects.create(title="New task")
+        tasks = list(Task.objects.all())
+        self.assertEqual(tasks[0], newer)
+        self.assertEqual(tasks[1], older)
+
     def test_create_and_list(self):
         Task.objects.create(title="Write docs")
         res = self.client.get(reverse("tasks:list"))
@@ -12,9 +23,28 @@ class TaskTests(TestCase):
 
     def test_toggle_done(self):
         t = Task.objects.create(title="Do it")
-        self.client.get(reverse("tasks:toggle", args=[t.pk]))
+        res = self.client.get(reverse("tasks:toggle", args=[t.pk]))
+        self.assertRedirects(res, reverse("tasks:list"))
         t.refresh_from_db()
         self.assertTrue(t.is_done)
+
+    def test_update_view_updates_task(self):
+        task = Task.objects.create(title="Initial", description="")
+        res = self.client.post(
+            reverse("tasks:update", args=[task.pk]),
+            {"title": "Updated", "description": "Fresh desc", "is_done": True},
+        )
+        self.assertRedirects(res, reverse("tasks:list"))
+        task.refresh_from_db()
+        self.assertEqual(task.title, "Updated")
+        self.assertEqual(task.description, "Fresh desc")
+        self.assertTrue(task.is_done)
+
+    def test_delete_view_removes_task(self):
+        task = Task.objects.create(title="Delete me")
+        res = self.client.post(reverse("tasks:delete", args=[task.pk]))
+        self.assertRedirects(res, reverse("tasks:list"))
+        self.assertFalse(Task.objects.filter(pk=task.pk).exists())
 
     def test_list_filter_status_open(self):
         Task.objects.create(title="Open task")

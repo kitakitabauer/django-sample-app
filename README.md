@@ -91,13 +91,27 @@ uv run pre-commit run --all-files
 
 画面上部の検索フォームからも同じ条件を指定できます。条件を解除したい場合は「条件をクリア」ボタンを利用してください。
 
+## 🧪 テスト実行
+
+- Django の TestCase ベース:
+
+  ```bash
+  uv run manage.py test
+  ```
+
+- pytest / pytest-django ベースの統合テスト:
+
+  ```bash
+  uv run pytest
+  ```
+
 ## ✅ チーム向け環境再現
 
 ```bash
 uv sync --extra dev
 ```
 
-GitHub Actions（`.github/workflows/ci.yml`）でも同じコマンドで依存関係を準備し、Black / Ruff / Django テストを自動実行します。
+GitHub Actions（`.github/workflows/ci.yml`）でも同じコマンドで依存関係を準備し、Black / Ruff / pytest / Django テストを自動実行します。
 
 ---
 

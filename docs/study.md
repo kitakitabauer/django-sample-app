@@ -41,4 +41,5 @@
 
 - `.pre-commit-config.yaml` で Black と Ruff を走らせる。`uv sync --extra dev` で開発ツールを取得し、`uv run pre-commit install` でフックを有効化する。
 - 手動で整形・lint したいときは `uv run black .`、`uv run ruff check .` を利用する。
-- GitHub Actions（`.github/workflows/ci.yml`）では `uv sync --extra dev` → Black チェック → Ruff lint → `manage.py test` の順に自動実行される。
+- テストは `uv run manage.py test`（Django TestCase）と `uv run pytest`（pytest-django）を併用し、ビューとモデルの回帰テストをカバーする。
+- GitHub Actions（`.github/workflows/ci.yml`）では `uv sync --extra dev` → Black チェック → Ruff lint → `pytest` → `manage.py test` の順に自動実行される。
