@@ -35,3 +35,9 @@
 2. ルート URLConf とアプリ URLConf を切り分けて、URL ルーティングの仕組みを理解する。
 3. モデル → マイグレーション → ビュー → テンプレート → フォームの流れを小さな機能で反復して覚える。
 4. テンプレートタグ・フィルター、フォーム、管理サイトなど周辺機能を徐々に取り入れる。
+
+## 継続的開発ワークフロー
+
+- `.pre-commit-config.yaml` で Black と Ruff を走らせる。`uv sync --extra dev` で開発ツールを取得し、`uv run pre-commit install` でフックを有効化する。
+- 手動で整形・lint したいときは `uv run black .`、`uv run ruff check .` を利用する。
+- GitHub Actions（`.github/workflows/ci.yml`）では `uv sync --extra dev` → Black チェック → Ruff lint → `manage.py test` の順に自動実行される。

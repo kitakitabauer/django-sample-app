@@ -7,3 +7,28 @@ requires-python = ">=3.13"
 dependencies = [
     "django>=5.0,<6.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.8.0",
+    "ruff>=0.5.7",
+    "pre-commit>=3.8.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py313"]
+extend-exclude = "migrations"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "DJ"]
+ignore = ["E203"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

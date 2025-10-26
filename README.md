@@ -60,11 +60,35 @@ Python パッケージマネージャ **[uv](https://github.com/astral-sh/uv)** 
 
 ---
 
-## 🧩 チーム向け環境再現
+## 🛠 コード品質チェック
+
+開発ツール（Black / Ruff / pre-commit）を含めてセットアップする:
 
 ```bash
-uv sync
+uv sync --extra dev
 ```
+
+整形と lint の実行例:
+
+```bash
+uv run black .
+uv run ruff check .
+```
+
+### pre-commit フックを入れる
+
+```bash
+uv run pre-commit install
+uv run pre-commit run --all-files
+```
+
+## ✅ チーム向け環境再現
+
+```bash
+uv sync --extra dev
+```
+
+GitHub Actions（`.github/workflows/ci.yml`）でも同じコマンドで依存関係を準備し、Black / Ruff / Django テストを自動実行します。
 
 ---
 
