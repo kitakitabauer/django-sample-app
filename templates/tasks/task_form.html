@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Task編集{% endblock %}
+{% block content %}
+  <h1 class="mb-3">{{ view.object|yesno:"Edit Task,Create Task" }}</h1>
+  <form method="post" class="card card-body">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="mt-2">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">Back</a>
+    </div>
+  </form>
+{% endblock %}
