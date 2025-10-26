@@ -19,6 +19,7 @@
 
 - `apps.py` の `TasksConfig` で `name = "django_sample_app.tasks"` と設定し、Django に絶対パスを伝える。
 - `models.py` にタスクモデル、`admin.py` に管理画面の表示設定、`views.py` に CRUD 処理を実装。
+- `forms.py` で `TaskForm` を定義し、タイトル最小文字数・重複チェックや説明との重複禁止といったバリデーションを一元化してビューから利用する。
 - `urls.py` はアプリ専用の URLConf。ルート側で `include("django_sample_app.tasks.urls")` すると、`/` や `/create/` などが有効になる。
 - `migrations/` はモデル変更履歴、`tests.py` はアプリ単体テスト用。Django アプリの基本的な構成。
 
@@ -32,5 +33,5 @@
 
 1. `startproject`（設定）と `startapp`（機能）の役割を区別する。
 2. ルート URLConf とアプリ URLConf を切り分けて、URL ルーティングの仕組みを理解する。
-3. モデル → マイグレーション → ビュー → テンプレートの流れを小さな機能で反復して覚える。
+3. モデル → マイグレーション → ビュー → テンプレート → フォームの流れを小さな機能で反復して覚える。
 4. テンプレートタグ・フィルター、フォーム、管理サイトなど周辺機能を徐々に取り入れる。

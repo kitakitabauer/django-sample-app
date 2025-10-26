@@ -4,7 +4,39 @@
   <h1 class="mb-3">{{ view.object|yesno:"Edit Task,Create Task" }}</h1>
   <form method="post" class="card card-body">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <p class="mb-1 fw-bold">入力内容を確認してください。</p>
+        <ul class="mb-0">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="mb-3 {% if field.widget_type == 'checkbox' %}form-check{% endif %}">
+        {% if field.widget_type == 'checkbox' %}
+          {{ field }}
+          <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% else %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        {% endif %}
+        {% if field.help_text %}
+          <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
     <div class="mt-2">
       <button class="btn btn-primary" type="submit">Save</button>
       <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">Back</a>
