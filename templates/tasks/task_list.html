@@ -2,6 +2,37 @@
 {% block title %}ToDo一覧{% endblock %}
 {% block content %}
   <h1 class="mb-3">Tasks</h1>
+
+  <form method="get" class="row gy-2 gx-3 align-items-end mb-4">
+    <div class="col-md-6">
+      <label class="form-label" for="search-input">キーワード</label>
+      <input
+        id="search-input"
+        type="search"
+        class="form-control"
+        name="q"
+        value="{{ query }}"
+        placeholder="タイトルや詳細を検索"
+      >
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="status-select">ステータス</label>
+      <select id="status-select" class="form-select" name="status">
+        <option value="all"{% if current_status == 'all' %} selected{% endif %}>すべて</option>
+        <option value="open"{% if current_status == 'open' %} selected{% endif %}>未完了のみ</option>
+        <option value="done"{% if current_status == 'done' %} selected{% endif %}>完了のみ</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" type="submit">絞り込む</button>
+    </div>
+    {% if query or current_status != 'all' %}
+      <div class="col-auto">
+        <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">条件をクリア</a>
+      </div>
+    {% endif %}
+  </form>
+
   {% if tasks %}
     <ul class="list-group">
       {% for t in tasks %}
@@ -11,8 +42,12 @@
               {{ t.is_done|yesno:"Done,Open" }}
             </span>
             <strong class="ms-2">{{ t.title }}</strong>
-            {% if t.description %}<div class="text-muted small">{{ t.description }}</div>{% endif %}
-            <div class="small text-muted">created: {{ t.created_at|date:"Y-m-d H:i" }}</div>
+            {% if t.description %}
+              <div class="text-muted small">{{ t.description }}</div>
+            {% endif %}
+            <div class="small text-muted">
+              created: {{ t.created_at|date:"Y-m-d H:i" }}
+            </div>
           </div>
           <div class="btn-group">
             <a class="btn btn-sm btn-outline-secondary" href="{% url 'tasks:update' t.pk %}">Edit</a>
@@ -25,6 +60,10 @@
       {% endfor %}
     </ul>
   {% else %}
-    <p>まだタスクがありません。右上の「新規作成」からどうぞ！</p>
+    {% if query or current_status != 'all' %}
+      <p>条件に一致するタスクが見つかりませんでした。</p>
+    {% else %}
+      <p>まだタスクがありません。右上の「新規作成」からどうぞ！</p>
+    {% endif %}
   {% endif %}
 {% endblock %}

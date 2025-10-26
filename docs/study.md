@@ -20,6 +20,7 @@
 - `apps.py` の `TasksConfig` で `name = "django_sample_app.tasks"` と設定し、Django に絶対パスを伝える。
 - `models.py` にタスクモデル、`admin.py` に管理画面の表示設定、`views.py` に CRUD 処理を実装。
 - `forms.py` で `TaskForm` を定義し、タイトル最小文字数・重複チェックや説明との重複禁止といったバリデーションを一元化してビューから利用する。
+- `views.py` の `TaskListView.get_queryset()` で `?status=`（`all`/`open`/`done`）と `?q=` パラメーターを解釈し、未完了フィルターやキーワード検索を行う。コンテキストに現在の条件を渡し、テンプレート側でフォームを再表示できるようにする。
 - `urls.py` はアプリ専用の URLConf。ルート側で `include("django_sample_app.tasks.urls")` すると、`/` や `/create/` などが有効になる。
 - `migrations/` はモデル変更履歴、`tests.py` はアプリ単体テスト用。Django アプリの基本的な構成。
 
