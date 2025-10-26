@@ -2,7 +2,7 @@
 {% block title %}Task編集{% endblock %}
 {% block content %}
   <h1 class="mb-3">{{ view.object|yesno:"Edit Task,Create Task" }}</h1>
-  <form method="post" class="card card-body">
+  <form method="post" class="card card-body shadow-sm border-0">
     {% csrf_token %}
     {% if form.errors %}
       <div class="alert alert-danger">

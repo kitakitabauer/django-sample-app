@@ -1,0 +1,33 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+.task-card {
+  transition: transform 0.15s ease-in-out;
+}
+
+.task-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.toast-container {
+  z-index: 1080;
+}
+
+.search-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.75rem 1.5rem rgba(63, 63, 68, 0.05);
+}
+
+.search-card label {
+  font-weight: 600;
+  color: #495057;
+}

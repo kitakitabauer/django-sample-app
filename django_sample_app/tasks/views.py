@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -42,18 +44,20 @@ class TaskListView(ListView):
         return context
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(SuccessMessageMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = "tasks/task_form.html"
     success_url = reverse_lazy("tasks:list")
+    success_message = "タスクを作成しました。"
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(SuccessMessageMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = "tasks/task_form.html"
     success_url = reverse_lazy("tasks:list")
+    success_message = "タスクを更新しました。"
 
 
 class TaskDeleteView(DeleteView):
@@ -61,9 +65,18 @@ class TaskDeleteView(DeleteView):
     template_name = "tasks/task_confirm_delete.html"
     success_url = reverse_lazy("tasks:list")
 
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, "タスクを削除しました。")
+        return response
+
 
 def toggle_done(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.is_done = not task.is_done
     task.save()
+    messages.info(
+        request,
+        f"「{task.title}」を{'完了' if task.is_done else '未完了'}に切り替えました。",
+    )
     return redirect("tasks:list")

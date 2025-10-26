@@ -105,6 +105,13 @@ uv run pre-commit run --all-files
   uv run pytest
   ```
 
+## 🎨 UI / UX のポイント
+
+- Bootstrap 5 を利用し、`static/css/main.css` と `static/js/main.js` で軽微なカスタムスタイルとトースト通知を管理しています。
+- Django メッセージフレームワークを有効活用し、作成・更新・削除・トグル操作後にトーストで結果を表示します。
+- テンプレート共通パーツ（`templates/partials/`）にナビゲーションとメッセージ表示を切り出し、レイアウトを統一しています。
+- 本番環境では `python manage.py collectstatic` を実行して静的ファイルを配備してください。
+
 ## ✅ チーム向け環境再現
 
 ```bash

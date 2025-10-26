@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block title %}削除確認{% endblock %}
 {% block content %}
-  <h1 class="mb-3">Delete Task</h1>
-  <p>「{{ object.title }}」を削除しますか？</p>
-  <form method="post" class="d-inline">
-    {% csrf_token %}
-    <button class="btn btn-danger" type="submit">Delete</button>
-  </form>
-  <a class="btn btn-outline-secondary ms-2" href="{% url 'tasks:list' %}">Cancel</a>
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h1 class="card-title h4 mb-3">Delete Task</h1>
+      <p class="card-text">「{{ object.title }}」を削除しますか？</p>
+      <form method="post" class="d-inline">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+      <a class="btn btn-outline-secondary ms-2" href="{% url 'tasks:list' %}">Cancel</a>
+    </div>
+  </div>
 {% endblock %}

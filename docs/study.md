@@ -43,3 +43,5 @@
 - 手動で整形・lint したいときは `uv run black .`、`uv run ruff check .` を利用する。
 - テストは `uv run manage.py test`（Django TestCase）と `uv run pytest`（pytest-django）を併用し、ビューとモデルの回帰テストをカバーする。
 - GitHub Actions（`.github/workflows/ci.yml`）では `uv sync --extra dev` → Black チェック → Ruff lint → `pytest` → `manage.py test` の順に自動実行される。
+- Bootstrap を CDN で読み込みつつ、`static/css/main.css`・`static/js/main.js` でカードやトースト表示を微調整。`templates/partials/` にナビゲーションとメッセージを分離して再利用性を高める。
+- メッセージフレームワークを導入し、作成・更新・削除・トグル操作時に通知を表示。トーストは Bootstrap の Toast コンポーネントで自動表示される。
